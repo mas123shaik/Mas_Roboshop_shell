@@ -114,5 +114,22 @@ exit_status_print() {
   fi
 }
 
+golang_app_setup() {
+  print_head Install golang Packages
+  dnf install golang -y &>>$log_file
+  exit_status_print $?
+
+  artifact_download
+
+  cd /app
+
+  print_head download and build software
+  go mod init dispatch &>>$log_file
+  go get &>>$log_file
+  go build &>>$log_file
+  systemd_setup
+}
+
+
 pwd=$(pwd)
 
